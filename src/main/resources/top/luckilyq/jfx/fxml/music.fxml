@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<?import javafx.scene.web.WebView?>
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="top.luckilyq.jfx.ctrl.MusicCtrl">
+
+    <!--底部高斯模糊背景层-->
+    <AnchorPane prefHeight="-Infinity" prefWidth="-Infinity" styleClass="bg">
+        <effect>
+            <GaussianBlur radius="20"/>
+        </effect>
+    </AnchorPane>
+
+    <!--上层BorderPane布局-->
+    <BorderPane prefHeight="-Infinity" prefWidth="-Infinity">
+        <!--顶部用垂直布局，分为标题栏和工具栏两部分-->
+        <top>
+            <VBox>
+                <!-- 标题栏，用水平拉伸的pane撑开为左右两端-->
+                <HBox alignment="CENTER_LEFT" onMouseDragged="#onDragged" onMousePressed="#onPressed" prefHeight="40.0"
+                      spacing="20" styleClass="top">
+                    <padding>
+                        <Insets left="20" right="20"/>
+                    </padding>
+                    <Label styleClass="logo"/>
+                    <Label styleClass="title" text="luckilyq"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Label onMouseClicked="#onMinClicked" styleClass="min"/>
+                    <Label onMouseClicked="#onCloseClicked" styleClass="close"/>
+                </HBox>
+
+                <!--工具栏，用StackPane实现遮罩层的效果-->
+                <StackPane>
+                    <!--0 遮罩层-->
+                    <AnchorPane styleClass="container" prefWidth="-Infinity" prefHeight="-Infinity"/>
+                    <!--1 上层内容，水平布局-->
+                    <HBox alignment="CENTER" prefHeight="80.0" spacing="15.0">
+                        <padding>
+                            <Insets left="20.0" right="20.0"/>
+                        </padding>
+
+                        <!--1-1 左侧图标-->
+                        <ImageView fitHeight="70.0" fitWidth="70.0" styleClass="link">
+                            <Image url="@../icon/icon1.png"/>
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="70.0" fitWidth="70.0" styleClass="link">
+                            <Image url="@../icon/icon4.png"/>
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                        </ImageView>
+
+                        <!--1-2 水平撑开-->
+                        <Pane HBox.hgrow="ALWAYS"/>
+
+                        <!--1-3 右侧头像-->
+                        <ImageView styleClass="link">
+                            <Image url="@../img/me.jpg"/>
+                            <fitWidth>70</fitWidth>
+                            <fitHeight>70</fitHeight>
+                            <clip>
+                                <Circle centerX="35" centerY="35">
+                                    <radius>35</radius>
+                                </Circle>
+                            </clip>
+                        </ImageView>
+                    </HBox>
+                </StackPane>
+            </VBox>
+        </top>
+
+        <!--左侧功能按钮区，用StackPane切换右侧对应面板的可见性-->
+        <left>
+            <!--垂直布局-->
+            <VBox alignment="TOP_CENTER" prefWidth="200" spacing="20">
+                <padding>
+                    <Insets bottom="20.0" top="40.0"/>
+                </padding>
+                <Button onAction="#showFirstPane" styleClass="btn" text="民谣"/>
+                <Button onAction="#showSecondPane" styleClass="btn" text="抒情"/>
+                <Button onAction="#showThirdPane" styleClass="btn" text="榜单"/>
+            </VBox>
+        </left>
+
+        <!--不同的内容面板，用StackPane堆叠-->
+        <center>
+            <StackPane prefHeight="-Infinity" prefWidth="-Infinity">
+                <!--第一个面板，流式布局，引入外部fxml卡片组件-->
+                <FlowPane hgap="20.0" vgap="40.0" fx:id="firstPane">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                    <fx:include source="card.fxml"/>
+                </FlowPane>
+
+                <!--第二个面板，网格布局-->
+                <GridPane visible="false" hgap="20" vgap="20" fx:id="secondPane">
+                    <fx:include source="disc.fxml" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                    <fx:include source="disc.fxml" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                </GridPane>
+
+                <!--第三个面板，WebView-->
+                <AnchorPane visible="false" fx:id="thirdPane">
+                    <WebView fx:id="browser" prefWidth="950">
+                    </WebView>
+                </AnchorPane>
+
+                <padding>
+                    <Insets top="40.0"/>
+                </padding>
+            </StackPane>
+        </center>
+    </BorderPane>
+
+</StackPane>
